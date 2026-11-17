@@ -814,7 +814,7 @@ The country is automatically selected according to the site location, but it can
 </tr>
 <tr class="even">
 <td style="text-align: left;"><strong>Electricity import is not possible</strong> <br> [checkbox]</td>
-<td style="text-align: left;">Enable this option if electricity can be exported to the grid but cannot be imported from it. When enabled, the system cannot purchase electricity from the grid. This is typically relevant when optimizing a generation plant with storage, where charging from the grid is not permitted by the DSO. If enabled, the following options are automatically disabled: <em>Electricity export is not possible</em>, <em>Energy export limited to the imported amount</em>.</td>
+<td style="text-align: left;">Enable this option if electricity can be exported to the grid but cannot be imported from it. When enabled, the system cannot purchase electricity from the electricity supplier. This is typically relevant when optimizing a generation plant with storage, where charging from the grid is not permitted by the DSO. The only exception is the renewable energy surplus (RESu, <a href="#sec-resu" class="quarto-xref"><span>Section 4.2.3</span></a>): if RESu is active, its surplus energy can still be taken from the grid, while purchasing from the supplier remains blocked. If enabled, the following options are automatically disabled: <em>Electricity export is not possible</em>, <em>Energy export limited to the imported amount</em>.</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><strong>Energy export limited to the imported amount</strong> <br> [checkbox]</td>
@@ -899,19 +899,19 @@ The country is automatically selected according to the site location, but it can
 <p>The tool calculates the minimum required connection size needed to enable the payoff period constraint. If this minimum is not reached, an error message is displayed.</p>
 </div>
 </div>
-<div class="callout callout-style-default callout-warning callout-titled" title="Using RESu and limiting electricity import">
+<div class="callout callout-style-default callout-note callout-titled" title="Using RESu and limiting electricity import">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Using RESu and limiting electricity import
+<span class="screen-reader-only">Note</span>Using RESu and limiting electricity import
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Under the <strong>Advanced features</strong> of the <strong>Electrical grid connection</strong> (see <a href="#sec-egc-advanced" class="quarto-xref"><span>Section 4.2.2.3</span></a>), it is possible to forbid electricity import. If this option is enabled, the <strong>RESu component</strong> (<a href="#sec-resu" class="quarto-xref"><span>Section 4.2.3</span></a>) cannot be used.</p>
-<p>This restriction is intended for scenarios such as power plants where grid import is not allowed.</p>
-<p>If this combination is enabled, the tool will notify the user with adequate error message.</p>
+<p>Under the <strong>Advanced features</strong> of the <strong>Electrical grid connection</strong> (see <a href="#sec-egc-advanced" class="quarto-xref"><span>Section 4.2.2.3</span></a>), it is possible to forbid electricity import. This restriction applies to the electricity bought from the supplier. The <strong>RESu component</strong> (<a href="#sec-resu" class="quarto-xref"><span>Section 4.2.3</span></a>) can still be used together with it, so the system can take renewable surplus energy from the grid while buying no electricity from the supplier. This is the intended setup for e.g.&nbsp;a hydrogen plant that is allowed to run only on renewable surplus (HPM).</p>
+<p>The RESu energy flows through the grid connection, so it is still counted in the peak power and connection size.</p>
+<p>In time steps with available renewable surplus, electricity cannot be exported to the grid and the RESu energy cannot be sold back to the supplier. The RESu energy can only be consumed on site, or left unused.</p>
 </div>
 </div>
 <hr>
@@ -979,15 +979,13 @@ The country is automatically selected according to the site location, but it can
 </section>
 <section id="interface-options" class="level4" data-number="4.2.3.3">
 <h4 data-number="4.2.3.3" class="anchored" data-anchor-id="interface-options"><span class="header-section-number">4.2.3.3</span> Interface options</h4>
-<p>The RESu component provides a tabbed interface with two data input methods:</p>
+<p>The RESu component provides the following options:</p>
 <ol type="1">
-<li><p><strong>From HPM tab</strong>: Import renewable surplus data directly from the Hydrogen Potential Model (HPM) output file. Click <em>Browse…</em> to select the HPM output CSV file. Note: This feature is not yet fully implemented.</p></li>
 <li><p><strong>From tabular tab</strong>: Import a custom renewable surplus profile from a CSV file. Click <em>Browse…</em> to select the CSV file containing the RESu profile. Additionally, you can set the energy price at which the surplus renewable energy is bought from the grid.</p></li>
-<li><p><strong>Check renewable energy surplus button</strong>: After loading a RESu profile (from either source), click this button to visualize the renewable energy surplus data as a time series chart. This helps verify that the data has been correctly imported and shows the profile over time.</p></li>
+<li><p><strong>Check renewable energy surplus button</strong>: After loading a RESu profile, click this button to visualize the renewable energy surplus data as a time series chart. This helps verify that the data has been correctly imported and shows the profile over time.</p></li>
 </ol>
 <p><strong>Data format requirements:</strong></p>
 <ul>
-<li>HPM output file: 2 columns, 8760 rows (hourly data for non-leap year)</li>
 <li>Custom RESu profile: 1 column, 8760 rows (hourly), 17,520 rows (30-min), or 35,040 rows (15-min)</li>
 </ul>
 </section>
@@ -1001,12 +999,11 @@ The country is automatically selected according to the site location, but it can
 <h4 data-number="4.2.3.5" class="anchored" data-anchor-id="troubleshooting-1"><span class="header-section-number">4.2.3.5</span> Troubleshooting</h4>
 <p>Common issues and solutions:</p>
 <ul>
-<li><p><strong>HPM output file is not defined</strong>: When using the <em>From HPM</em> tab, ensure you have selected an HPM output file. Note that this feature is currently not fully implemented. Use the <em>From tabular</em> option instead.</p></li>
 <li><p><strong>File with RESu profile is not defined</strong>: When using the <em>From tabular</em> tab, ensure you have imported a valid CSV file with the RESu profile. Click <em>Browse…</em> to select a properly formatted CSV file.</p></li>
 <li><p><strong>Invalid file format</strong>: The custom RESu file must be a single-column CSV with no header. Ensure your file meets this requirement.</p></li>
 <li><p><strong>Incorrect number of rows</strong>: The RESu profile file must contain exactly 8760, 17,520, or 35,040 rows. If your data is from a leap year, remove one day of data to match the expected row counts. Common row counts: 8760 (hourly), 17520 (30-min), 35040 (15-min).</p></li>
 <li><p><strong>RESu and LREP combination error</strong>: If you have both RESu and LREP active with the payoff period limit enabled, the optimization will fail. Disable the payoff period limit or remove one of these components from your configuration.</p></li>
-<li><p><strong>Grid import required</strong>: When using RESu, electricity import from the grid must not be disabled in the Electrical grid connection settings. Ensure import is allowed if you want to use RESu.</p></li>
+<li><p><strong>Using RESu without grid import</strong>: RESu can be used even when <em>Electricity import is not possible</em> is enabled in the Electrical grid connection settings. In that case, no electricity is bought from the supplier and all imported energy comes from the renewable surplus. In time steps with available surplus, export to the grid and selling RESu energy back to the supplier are not allowed.</p></li>
 </ul>
 <hr>
 </section>
@@ -1840,7 +1837,7 @@ If such a configuration is optimized, the tool displays an error message and the
 </ul>
 <p>This section also includes parameters of auxiliary equipment required for proper electrolyser operation:</p>
 <ul>
-<li><strong>Hydrogen compressor</strong>: compresses hydrogen from the electrolyser outlet to the hydrogen storage tank using electricity. Its size is determined by the hydrogen mass flow rate, while its power consumption depends on the inlet pressure (electrolyser outlet) and outlet pressure (nominal hydrogen tank pressure).</li>
+<li><strong>Hydrogen compressor</strong>: compresses hydrogen from the low-pressure hydrogen bus, into which all electrolysers deliver hydrogen, to the hydrogen storage tank using electricity. Its size is determined by the hydrogen mass flow rate, while its power consumption is calculated from the inlet pressure (the lowest electrolyser outlet pressure) and the outlet pressure (rated pressure of the hydrogen tank).</li>
 <li><strong>Hydrogen storage tank</strong>: stores hydrogen between production and consumption or sale. The tank must be sized to store at least one full day of hydrogen sales.</li>
 </ul>
 <section id="input-parameters-6" class="level4" data-number="4.2.9.1">
@@ -1890,10 +1887,6 @@ If such a configuration is optimized, the tool displays an error message and the
 </table>
 <p><br><strong>Advanced parameters – <em>Electrolyser</em></strong></p>
 <table class="table-striped caption-top table">
-<colgroup>
-<col style="width: 26%">
-<col style="width: 73%">
-</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Parameter</th>
@@ -1935,33 +1928,37 @@ If such a configuration is optimized, the tool displays an error message and the
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><strong>Hydrogen outlet pressure</strong> <br> [bar]</td>
-<td style="text-align: left;">Gauge pressure of hydrogen at the electrolyser outlet under nominal conditions, i.e.&nbsp;at nominal power, expressed as difference from the atmospheric pressure (sometimes denoted with “barg”).</td>
+<td style="text-align: left;">Gauge pressure of hydrogen at the electrolyser outlet under nominal conditions, i.e.&nbsp;at nominal power, expressed as difference from the atmospheric pressure (sometimes denoted with “barg”). The lowest outlet pressure of all electrolysers is the inlet pressure of the hydrogen compressor and is used to calculate its <em>Power consumption</em>.</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;"><strong>Oxygen outlet pressure</strong> <br> [bar]</td>
+<td style="text-align: left;">Gauge pressure of oxygen at the electrolyser outlet under nominal conditions, expressed as difference from the atmospheric pressure (barg). In many electrolysers the oxygen side is at a lower pressure than the hydrogen side. The oxygen outputs of all electrolysers are joined, so the lowest oxygen outlet pressure is the inlet pressure of the oxygen compressor in <a href="#sec-o2sales">O2 sales</a> and is used to calculate its <em>Power consumption</em>.</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;"><strong>Water consumption</strong> <br> [l/kg]</td>
 <td style="text-align: left;">Water required for producing 1 kg of hydrogen. The theoretical minimum is approximately 9 kg (≈9 l) of water per kg of hydrogen.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><strong>Minimum electrolyser size</strong> <br> [kW]</td>
 <td style="text-align: left;">Lower limit on the size (installed power in [kW]) of the electrolyser. If greater than zero, <em>Maximal payoff period</em> and <em>Maximum investment</em> in <em>Financial parameters</em> must be disabled.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><strong>Maximum electrolyser size</strong> <br> [kW]</td>
 <td style="text-align: left;">Upper limit on the size (installed power in [kW]) of the electrolyser.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><strong>Maintenance price</strong> <br> [€/kW]</td>
 <td style="text-align: left;">Estimated annual operation and maintenance (O&amp;M) price per installed power. O&amp;M does not include degradation of the system.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><strong>Replacement price</strong> <br> [€/kW]</td>
 <td style="text-align: left;">Future specific investment cost applied when the electrolyser reaches end of life. The subsidy does not apply to replacement costs.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><strong>Lifetime</strong> <br> [years]</td>
 <td style="text-align: left;">Number of years after which the whole electrolyser must be replaced.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><strong>Subsidy</strong> <br> [%]</td>
 <td style="text-align: left;">Percentage that is <strong>deductible</strong> from the investment cost. Does not apply to the replacement price.</td>
 </tr>
@@ -1994,11 +1991,11 @@ If such a configuration is optimized, the tool displays an error message and the
 </tr>
 <tr class="even">
 <td style="text-align: left;"><strong>Efficiency</strong> <br> [%]</td>
-<td style="text-align: left;">The tool first calculates the theoretical mechanical power required to reach the desired discharge pressure using the adiabatic compression model for ideal gases, based on the electrolyser outlet pressure and the hydrogen storage tank pressure. The compressor efficiency is then applied to determine the required electrical power consumption. When entering <em>Efficiency</em>, <em>Power consumption</em> is updated as well. Efficiencies greater than 100% are allowed in order to include isothermal compressors.</td>
+<td style="text-align: left;">The tool first calculates the theoretical energy required to compress hydrogen from the hydrogen bus pressure (the lowest electrolyser outlet pressure) to the rated pressure of the hydrogen storage tank, using the adiabatic compression model. This energy is then divided by the compressor efficiency to get the electrical <em>Power consumption</em>. When entering <em>Efficiency</em>, <em>Power consumption</em> is recalculated.</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><strong>Power consumption</strong> <br> [kWh/kg]</td>
-<td style="text-align: left;">Electrical energy required to compress 1 kg of hydrogen from the electrolyser outlet pressure to the hydrogen storage tank pressure. It is calculated using the adiabatic compression model for ideal gases and includes the effect of <em>Efficiency</em>. When entering <em>Power consumption</em>, <em>Efficiency</em> is updated as well.</td>
+<td style="text-align: left;">Electrical energy required to compress 1 kg of hydrogen from the hydrogen bus to the hydrogen storage tank. This value is calculated by the tool and cannot be entered (see the formula below the table). It is recalculated whenever <em>Efficiency</em>, the <em>Hydrogen outlet pressure</em> of any electrolyser, or the <em>Rated pressure</em> of the hydrogen storage tank changes, and when an electrolyser is added or removed.</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><strong>Minimum inlet pressure</strong> <br> [bar]</td>
@@ -2030,12 +2027,19 @@ If such a configuration is optimized, the tool displays an error message and the
 </tr>
 </tbody>
 </table>
+<p><strong>Calculation of the compressor power consumption</strong></p>
+<p>All electrolysers deliver hydrogen into one low-pressure hydrogen bus, so a single compressor is needed. Its inlet pressure is the bus pressure <span class="math inline">\(p^{hbus}\)</span>, equal to the lowest <em>Hydrogen outlet pressure</em> of all electrolysers, and its outlet pressure <span class="math inline">\(p^{htank}\)</span> is the <em>Rated pressure</em> of the hydrogen storage tank. Both are entered as gauge pressures, so the atmospheric pressure <span class="math inline">\(p_{atm} = 1.01325\)</span> bar is added to each of them to get absolute pressures. Assuming adiabatic compression of a real gas, the power consumption <span class="math inline">\(e_{el}\)</span> in [kWh/kg] is:</p>
+<p><span class="math display">\[e_{el} = \frac{1}{\eta_{el}} \, \frac{\kappa}{\kappa - 1} \, Z \, R \, T \left[ \left( \frac{p^{htank} + p_{atm}}{p^{hbus} + p_{atm}} \right)^{\frac{\kappa - 1}{\kappa}} - 1 \right]\]</span></p>
+<p>where <span class="math inline">\(\eta_{el}\)</span> is the compressor <em>Efficiency</em> and the physical constants of hydrogen are:</p>
+<ul>
+<li><span class="math inline">\(\kappa = 1.41\)</span> – ratio of specific heat at constant pressure to that at constant volume,</li>
+<li><span class="math inline">\(Z = 1.0059\)</span> – compressibility factor, which accounts for the deviation of hydrogen from an ideal gas (taken as constant, which has negligible effect on accuracy),</li>
+<li><span class="math inline">\(R = 0.00114563\)</span> kWh/(kg K) – individual gas constant,</li>
+<li><span class="math inline">\(T = 298\)</span> K – temperature of hydrogen during compression.</li>
+</ul>
+<p>If the tank pressure is not higher than the bus pressure, no compression is needed and the power consumption is 0. The electrical power of the compressor in each time step is <span class="math inline">\(e_{el}\)</span> multiplied by the mass flow of hydrogen compressed into the tank.</p>
 <p><br><strong>Advanced parameters – <em>Hydrogen storage tank</em></strong></p>
 <table class="table-striped caption-top table">
-<colgroup>
-<col style="width: 26%">
-<col style="width: 73%">
-</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Parameter</th>
@@ -2057,7 +2061,7 @@ If such a configuration is optimized, the tool displays an error message and the
 </tr>
 <tr class="even">
 <td style="text-align: left;"><strong>Rated pressure</strong> <br> [bar]</td>
-<td style="text-align: left;">Maximum allowable operating pressure of the storage tank.</td>
+<td style="text-align: left;">Maximum allowable operating pressure of the storage tank, expressed as difference from the atmospheric pressure (sometimes denoted with “barg”). It is also the outlet pressure of the hydrogen compressor and is used to calculate its <em>Power consumption</em>, and the inlet pressure of the hydrogen compressor for <a href="#sec-h2sales">H2 sales</a>.</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><strong>Minimum capacity</strong> <br> [kg]</td>
@@ -2668,7 +2672,7 @@ If such a configuration is optimized, the tool displays an error message and the
 </tr>
 <tr class="even">
 <td style="text-align: left;"><strong>Required pressure</strong> <br> [bar]</td>
-<td style="text-align: left;">Pressure of hydrogen that is required for the customer.</td>
+<td style="text-align: left;">Pressure of hydrogen that is required for the customer, expressed as difference from the atmospheric pressure (barg). It is the outlet pressure of the hydrogen compressor for this customer and is used to calculate its <em>Power consumption</em>.</td>
 </tr>
 </tbody>
 </table>
@@ -2844,50 +2848,57 @@ If such a configuration is optimized, the tool displays an error message and the
 </tr>
 <tr class="even">
 <td style="text-align: left;"><strong>Efficiency</strong> <br> [%]</td>
-<td style="text-align: left;">Amount of power to produce adequate pressure level at the discharge of the compressor is calculated by the model, but no compressor is perfect so the model includes efficiency of the compressor to get the required electrical power consumption for compression. When entering Efficiency, Power consumption will be updated.</td>
+<td style="text-align: left;">The tool first calculates the theoretical energy required to compress hydrogen from the pressure of the hydrogen storage tank to the required pressure of every customer, using the adiabatic compression model. This energy is then divided by the compressor efficiency to get the electrical <em>Power consumption</em>. When entering <em>Efficiency</em>, <em>Power consumption per customer</em> is recalculated.</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><strong>Power consumption</strong> <br> [kW/(kg/h)]</td>
-<td style="text-align: left;">Amount of electrical power needed for compression of hydrogen with mass flow of 1 kg/h. This value will be calculated when entering Efficiency. Alternatively, you can enter Power consumption and Efficiency will be calculated. The unit of flow rate is [kg/h], but it can be easily converted into normal volumetric flow rate. For reference, 1 kg/h = 11.207 Nm3/h of hydrogen.</td>
+<td style="text-align: left;"><strong>Inlet pressure</strong> <br> [bar]</td>
+<td style="text-align: left;">Pressure of the hydrogen entering the compressor, which is the <em>Rated pressure</em> of the hydrogen storage tank in the Electrolyser section, expressed as difference from the atmospheric pressure (barg). This value is calculated by the tool and cannot be entered.</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;"><strong>Power consumption per customer</strong> <br> [kWh/kg]</td>
+<td style="text-align: left;">Read-only table with the electrical energy required to compress 1 kg of hydrogen for every customer, from the <em>Inlet pressure</em> to the <em>Required pressure</em> of the customer (see the formula below the table). Every customer has its own value. If a customer requires a pressure that is not higher than the tank pressure, the value is 0, but the hydrogen still passes through the compressor and counts towards its size. The table is recalculated whenever <em>Efficiency</em>, the tank pressure, or a customer changes.</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;"><strong>Minimum inlet pressure</strong> <br> [bar]</td>
 <td style="text-align: left;">Minimum inlet pressure required for proper compressor operation. Below this threshold, the compressor may be damaged or underperform.</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;"><strong>Maximum inlet pressure</strong> <br> [bar]</td>
-<td style="text-align: left;">Maximum inlet pressure the compressor can handle safely. Exceeding this can cause damage or failure.</td>
-</tr>
 <tr class="even">
-<td style="text-align: left;"><strong>Minimum discharge pressure</strong> <br> [bar]</td>
-<td style="text-align: left;">Minimum discharge pressure required to meet downstream demand. Falling below this may cause equipment malfunction.</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;"><strong>Maximum discharge pressure</strong> <br> [bar]</td>
 <td style="text-align: left;">Maximum discharge pressure the compressor can generate safely. Exceeding this may cause system failure.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><strong>Investment price</strong> <br> [€/(kg/h)]</td>
 <td style="text-align: left;">Investment price per unit of gas flow which includes the compressor itself, additional equipment (e.g.&nbsp;metering devices), installation, commissioning, financing, and all other necessities until full operation. The unit of flow rate is [kg/h], but it can be easily converted into normal volumetric flow rate. For reference, 1 kg/h ≈ 11.207 Nm³/h of hydrogen.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><strong>Operation and maintenance price</strong> <br> [€/(kg/h)]</td>
 <td style="text-align: left;">Estimated annual operation and maintenance (O&amp;M) price per unit of gas flow. O&amp;M includes (but does not limit to) inspections, regular services, administration costs, overhauls, and replacing broken components. O&amp;M does not include degradation of the compressor. The unit of flow rate is [kg/h], but it can be easily converted into normal volumetric flow rate. For reference, 1 kg/h = 11.207 Nm3/h of hydrogen.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><strong>Replacement price</strong> <br> [€/(kg/h)]</td>
 <td style="text-align: left;">Replacement price per unit of gas flow includes all necessary elements, materials, and labour from dismantling the old compressor until the full operation of the new compressor. The unit of flow rate is [kg/h], but it can be easily converted into normal volumetric flow rate. For reference, 1 kg/h = 11.207 Nm3/h of hydrogen.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><strong>Lifetime</strong> <br> [years]</td>
 <td style="text-align: left;">Number of years after which the tank needs to be replaced.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><strong>Subsidy</strong> <br> [%]</td>
 <td style="text-align: left;">Percentage that is deductible from the investment cost. Does not apply to the replacement cost.</td>
 </tr>
 </tbody>
 </table>
+<p><strong>Calculation of the compressor power consumption</strong></p>
+<p>The compressor takes hydrogen from the hydrogen storage tank at its <em>Rated pressure</em> <span class="math inline">\(p^{htank}\)</span> and compresses it to the <em>Required pressure</em> <span class="math inline">\(p^{hsale}(a)\)</span> of every customer <span class="math inline">\(a\)</span>. Both are gauge pressures, so the atmospheric pressure <span class="math inline">\(p_{atm} = 1.01325\)</span> bar is added to each of them to get absolute pressures. Assuming adiabatic compression of a real gas, the power consumption <span class="math inline">\(e_{el}(a)\)</span> for customer <span class="math inline">\(a\)</span> in [kWh/kg] is:</p>
+<p><span class="math display">\[e_{el}(a) = \frac{1}{\eta_{el}} \, \frac{\kappa}{\kappa - 1} \, Z \, R \, T \left[ \left( \frac{p^{hsale}(a) + p_{atm}}{p^{htank} + p_{atm}} \right)^{\frac{\kappa - 1}{\kappa}} - 1 \right]\]</span></p>
+<p>where <span class="math inline">\(\eta_{el}\)</span> is the compressor <em>Efficiency</em> and the physical constants of hydrogen are:</p>
+<ul>
+<li><span class="math inline">\(\kappa = 1.41\)</span> – ratio of specific heat at constant pressure to that at constant volume,</li>
+<li><span class="math inline">\(Z = 1.0059\)</span> – compressibility factor, which accounts for the deviation of hydrogen from an ideal gas (taken as constant, which has negligible effect on accuracy),</li>
+<li><span class="math inline">\(R = 0.00114563\)</span> kWh/(kg K) – individual gas constant,</li>
+<li><span class="math inline">\(T = 298\)</span> K – temperature of hydrogen during compression.</li>
+</ul>
+<p>If the required pressure is not higher than the tank pressure, the power consumption is 0. The electrical power of the compressor in each time step is the sum over all customers of <span class="math inline">\(e_{el}(a)\)</span> multiplied by the mass flow of hydrogen sold to customer <span class="math inline">\(a\)</span>. Gas grid injection does not use this compressor.</p>
 </section>
 <section id="interface-options-8" class="level4" data-number="4.2.11.2">
 <h4 data-number="4.2.11.2" class="anchored" data-anchor-id="interface-options-8"><span class="header-section-number">4.2.11.2</span> Interface options</h4>
@@ -3029,7 +3040,7 @@ If such a configuration is optimized, the tool displays an error message and the
 </tr>
 <tr class="even">
 <td style="text-align: left;"><strong>Rated pressure</strong> <br> [bar]</td>
-<td style="text-align: left;">The maximum pressure allowed in the storage tank.</td>
+<td style="text-align: left;">The maximum pressure allowed in the storage tank, expressed as difference from the atmospheric pressure (barg). It is also the outlet pressure of the oxygen compressor and is used to calculate its <em>Power consumption</em>.</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><strong>Minimum capacity</strong> <br> [kg]</td>
@@ -3064,10 +3075,6 @@ If such a configuration is optimized, the tool displays an error message and the
 <p><br> <strong>Oxygen compressor parameters</strong></p>
 <p>The oxygen compressor section allows you to configure compression equipment that pressurizes oxygen before storing it in the tank. This section is advanced and hidden by default in a collapsible tree node.</p>
 <table class="table-striped caption-top table">
-<colgroup>
-<col style="width: 27%">
-<col style="width: 72%">
-</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Parameter</th>
@@ -3089,50 +3096,57 @@ If such a configuration is optimized, the tool displays an error message and the
 </tr>
 <tr class="even">
 <td style="text-align: left;"><strong>Efficiency</strong> <br> [%]</td>
-<td style="text-align: left;">Amount of power to produce adequate pressure level at the discharge of the compressor is calculated by the model, but no compressor is perfect so the model includes efficiency of the compressor to get the required electrical power consumption for compression. When entering Efficiency, Power consumption will be updated.</td>
+<td style="text-align: left;">The tool first calculates the theoretical energy required to compress oxygen from the oxygen outlet pressure of the electrolysers to the rated pressure of the oxygen storage tank, using the adiabatic compression model. This energy is then divided by the compressor efficiency to get the electrical <em>Power consumption</em>. When entering <em>Efficiency</em>, <em>Power consumption</em> is recalculated.</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><strong>Power consumption</strong> <br> [kW/(kg/h)]</td>
-<td style="text-align: left;">Amount of electrical power needed for compression of oxygen with mass flow of 1 kg/h. This value will be calculated when entering Efficiency. Alternatively, you can enter Power consumption and Efficiency will be calculated. <br><br> The unit of flow rate is [kg/h], but it can be easily converted into normal volumetric flow rate. For reference, 1 kg/h ≈ 0.7 Nm³/h of oxygen.</td>
+<td style="text-align: left;"><strong>Inlet pressure</strong> <br> [bar]</td>
+<td style="text-align: left;">Pressure of the oxygen entering the compressor, expressed as difference from the atmospheric pressure (barg). The oxygen outputs of all electrolysers are joined, so it is the lowest <em>Oxygen outlet pressure</em> of the <a href="#sec-electrolyser">electrolysers</a>. This value is calculated by the tool and cannot be entered.</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;"><strong>Power consumption</strong> <br> [kWh/kg]</td>
+<td style="text-align: left;">Electrical energy required to compress 1 kg of oxygen from the <em>Inlet pressure</em> to the <em>Rated pressure</em> of the oxygen storage tank. This value is calculated by the tool and cannot be entered (see the formula below the table). It is recalculated whenever <em>Efficiency</em>, the oxygen outlet pressure of an electrolyser, or the tank pressure changes.</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;"><strong>Minimum inlet pressure</strong> <br> [bar]</td>
 <td style="text-align: left;">Most compressors require a minimum inlet pressure to operate efficiently. This minimum pressure ensures that the compressor can maintain proper lubrication and cooling, especially for oil-lubricated compressors. If the inlet pressure drops below this limit, the compressor may not function correctly, leading to potential damage or reduced performance.</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;"><strong>Maximum inlet pressure</strong> <br> [bar]</td>
-<td style="text-align: left;">Compressors also have a maximum inlet pressure limit, beyond which they may be at risk of damage or malfunction. Exceeding this limit can strain the compressor components, leading to potential leaks, overheating, or even catastrophic failure. Therefore, it’s crucial to operate the compressor within its specified inlet pressure range to ensure safe and efficient operation.</td>
-</tr>
 <tr class="even">
-<td style="text-align: left;"><strong>Minimum discharge pressure</strong> <br> [bar]</td>
-<td style="text-align: left;">In some cases, compressors may also have a minimum discharge pressure limit. This limit ensures that there is sufficient pressure in the system to meet the required downstream demand or maintain proper operation of connected equipment. Falling below this limit may result in inadequate performance or malfunction of downstream devices, especially in applications where a minimum pressure is necessary for proper function.</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;"><strong>Maximum discharge pressure</strong> <br> [bar]</td>
 <td style="text-align: left;">Compressors have a maximum discharge pressure limit, which represents the highest pressure that the compressor can safely generate. Exceeding this limit can lead to overpressurization of the system, potentially causing leaks, ruptures, or other catastrophic failures. Manufacturers specify this limit based on the design and materials of the compressor components, as well as safety standards and regulations.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><strong>Investment price</strong> <br> [€/(kg/h)]</td>
 <td style="text-align: left;">Investment price per unit of gas flow which includes the compressor itself, additional equipment (e.g.&nbsp;metering devices), installation, commissioning, financing, and all other necessities until full operation. <br><br> The unit of flow rate is [kg/h], but it can be easily converted into normal volumetric flow rate. For reference, 1 kg/h ≈ 0.7 Nm³/h of oxygen.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><strong>Operation and maintenance price</strong> <br> [€/(kg/h)]</td>
 <td style="text-align: left;">Estimated annual operation and maintenance (O&amp;M) price per unit of gas flow. O&amp;M includes (but does not limit to) inspections, regular services, administration costs, overhauls, and replacing broken components. O&amp;M does not include degradation of the compressor. <br><br> The unit of flow rate is [kg/h], but it can be easily converted into normal volumetric flow rate. For reference, 1 kg/h ≈ 0.7 Nm³/h of oxygen.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><strong>Replacement price</strong> <br> [€/(kg/h)]</td>
 <td style="text-align: left;">Replacement price per unit of gas flow includes all necessary elements, materials, and labour from dismantling the old compressor until the full operation of the new compressor. <br><br> The unit of flow rate is [kg/h], but it can be easily converted into normal volumetric flow rate. For reference, 1 kg/h ≈ 0.7 Nm³/h of oxygen.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><strong>Lifetime</strong> <br> [years]</td>
 <td style="text-align: left;">Number of years after which the compressor needs to be replaced.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><strong>Subsidy</strong> <br> [%]</td>
 <td style="text-align: left;">Percentage that is deductable from the investment cost. Does not apply to the replacement cost.</td>
 </tr>
 </tbody>
 </table>
+<p><strong>Calculation of the compressor power consumption</strong></p>
+<p>The compressor takes oxygen at the <em>Inlet pressure</em> <span class="math inline">\(p^{elys}\)</span> (the lowest oxygen outlet pressure of the electrolysers) and compresses it to the <em>Rated pressure</em> <span class="math inline">\(p^{otank}\)</span> of the oxygen storage tank. Both are gauge pressures, so the atmospheric pressure <span class="math inline">\(p_{atm} = 1.01325\)</span> bar is added to each of them to get absolute pressures. Assuming adiabatic compression of a real gas, the power consumption <span class="math inline">\(e_{el}\)</span> in [kWh/kg] is:</p>
+<p><span class="math display">\[e_{el} = \frac{1}{\eta_{el}} \, \frac{\kappa}{\kappa - 1} \, Z \, R \, T \left[ \left( \frac{p^{otank} + p_{atm}}{p^{elys} + p_{atm}} \right)^{\frac{\kappa - 1}{\kappa}} - 1 \right]\]</span></p>
+<p>where <span class="math inline">\(\eta_{el}\)</span> is the compressor <em>Efficiency</em> and the physical constants of oxygen are:</p>
+<ul>
+<li><span class="math inline">\(\kappa = 1.40\)</span> – ratio of specific heat at constant pressure to that at constant volume,</li>
+<li><span class="math inline">\(Z = 0.99935\)</span> – compressibility factor, which accounts for the deviation of oxygen from an ideal gas,</li>
+<li><span class="math inline">\(R = 7.21701 \cdot 10^{-5}\)</span> kWh/(kg K) – individual gas constant,</li>
+<li><span class="math inline">\(T = 298\)</span> K – temperature of oxygen during compression.</li>
+</ul>
+<p>If the tank pressure is not higher than the inlet pressure, the power consumption is 0. The electrical power of the compressor in each time step is <span class="math inline">\(e_{el}\)</span> multiplied by the mass flow of oxygen compressed into the tank.</p>
 </section>
 <section id="interface-options-9" class="level4" data-number="4.2.12.2">
 <h4 data-number="4.2.12.2" class="anchored" data-anchor-id="interface-options-9"><span class="header-section-number">4.2.12.2</span> Interface options</h4>

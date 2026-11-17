@@ -174,7 +174,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#v1.0.0-build-012" id="toc-v1.0.0-build-012" class="nav-link active" data-scroll-target="#v1.0.0-build-012">2026-06-17 v1.0.0 build 012</a></li>
+  <li><a href="#v1.1.2-build-014" id="toc-v1.1.2-build-014" class="nav-link active" data-scroll-target="#v1.1.2-build-014">2026-11-17 v1.1.2 build 014</a></li>
+  <li><a href="#v1.0.0-build-012" id="toc-v1.0.0-build-012" class="nav-link" data-scroll-target="#v1.0.0-build-012">2026-06-17 v1.0.0 build 012</a></li>
   <li><a href="#v0.3.2-build-011" id="toc-v0.3.2-build-011" class="nav-link" data-scroll-target="#v0.3.2-build-011">2026-06-11 v0.3.2 build 011</a></li>
   <li><a href="#v0.3.1-build-010" id="toc-v0.3.1-build-010" class="nav-link" data-scroll-target="#v0.3.1-build-010">2026-05-05 v0.3.1 build 010</a></li>
   <li><a href="#v0.3.0-build-009" id="toc-v0.3.0-build-009" class="nav-link" data-scroll-target="#v0.3.0-build-009">2026-04-30 v0.3.0 build 009</a></li>
@@ -211,6 +212,34 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="v1.1.2-build-014" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="v1.1.2-build-014">2026-11-17 v1.1.2 build 014</h2>
+<ul>
+<li>bug: the application crashed on macOS when it was closed</li>
+<li>feature: macOS (Apple silicon) and Ubuntu/Linux (x86_64) versions, in addition to Windows; installers are built automatically on GitHub</li>
+<li>feature: HTML report exports all inputs, the system diagram, profiles and charts; chart data can be downloaded as CSV</li>
+<li>feature: the system diagram is shown on the results page</li>
+<li>feature: water tank level is an optimization variable; water cannot flow from the tank back into the water grid</li>
+<li>feature: power consumption of the compressor before the H2 tank, of the H2 sales compressor (per customer) and of the O2 sales compressor is calculated instead of entered</li>
+<li>feature: compressors keep only the minimum inlet and maximum outlet pressure</li>
+<li>feature: battery lifetime input in BESS, separate from the power converter</li>
+<li>feature: “Restore defaults” buttons in waste heat sections</li>
+<li>feature: rename dialogs are preloaded with the current name</li>
+<li>feature: HPM tab removed from RESu</li>
+<li>feature: RESu can be used when electricity import is not possible (import from the supplier is blocked)</li>
+<li>new solver parameters for faster solving</li>
+<li>improved preprocessing and postprocessing times</li>
+<li>bug: non-green energy appeared in the results although only green sources were available (electricity bus model updated)</li>
+<li>bug: PVGIS and renewables.ninja profiles converted to local time; fixed time of plots</li>
+<li>bug: components of a copied scenario pointed to the original scenario</li>
+<li>bug: names of fuel cell stacks in the investment table</li>
+<li>bug: waste heat error when local consumption is not used</li>
+<li>bug: wind farm error when importing renewables.ninja profiles</li>
+<li>bug: default price for water tank</li>
+<li>bug: water tank financials</li>
+<li>bug: fixed excessive memory use in heat modelling</li>
+</ul>
+</section>
 <section id="v1.0.0-build-012" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="v1.0.0-build-012">2026-06-17 v1.0.0 build 012</h2>
 <ul>
