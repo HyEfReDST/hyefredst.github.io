@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "HyEfRe DST",
     "section": "",
-    "text": "Preface\nThis is the documentation for version 1.1.2. (Version history). For download link and other useful information see the main project website.\nThis user manual introduces the Decision Support Tool (DST), a practical and user-friendly solution for planning and sizing investments in integrated energy systems based on green hydrogen technologies. The tool enables users to evaluate how locally available or imported renewable energy surpluses can be optimally converted into green hydrogen and efficiently integrated with electricity, gas, heating, and water networks.\nThe DST delivers techno-economic insights, including optimal system configuration, CAPEX/OPEX estimates, and key financial indicators such as NPV, IRR, and ROI. Designed for municipalities, energy planners, development agencies, and investors, the DST supports informed, data-driven decisions for developing cost-effective and future-ready hydrogen hubs.\nKey Features of the DST:",
+    "text": "Preface\nThis is the documentation for version 1.1.3. (Version history). For download link and other useful information see the main project website.\nThis user manual introduces the Decision Support Tool (DST), a practical and user-friendly solution for planning and sizing investments in integrated energy systems based on green hydrogen technologies. The tool enables users to evaluate how locally available or imported renewable energy surpluses can be optimally converted into green hydrogen and efficiently integrated with electricity, gas, heating, and water networks.\nThe DST delivers techno-economic insights, including optimal system configuration, CAPEX/OPEX estimates, and key financial indicators such as NPV, IRR, and ROI. Designed for municipalities, energy planners, development agencies, and investors, the DST supports informed, data-driven decisions for developing cost-effective and future-ready hydrogen hubs.\nKey Features of the DST:",
     "crumbs": [
       "Preface"
     ]
@@ -374,7 +374,17 @@
     "href": "09_version_history.html",
     "title": "Version history",
     "section": "",
-    "text": "2026-11-17 v1.1.2 build 014",
+    "text": "2026-11-18 v1.1.3 build 015",
+    "crumbs": [
+      "Version history"
+    ]
+  },
+  {
+    "objectID": "09_version_history.html#v1.1.3-build-015",
+    "href": "09_version_history.html#v1.1.3-build-015",
+    "title": "Version history",
+    "section": "",
+    "text": "bug: the application kept running after it was closed (on macOS, it stayed in the Dock and had to be force quit) because map tile download threads could hang\nbug: map tiles could not be downloaded on Linux because the SSL certificates were not found",
     "crumbs": [
       "Version history"
     ]
@@ -383,8 +393,8 @@
     "objectID": "09_version_history.html#v1.1.2-build-014",
     "href": "09_version_history.html#v1.1.2-build-014",
     "title": "Version history",
-    "section": "",
-    "text": "bug: the application crashed on macOS when it was closed\nfeature: macOS (Apple silicon) and Ubuntu/Linux (x86_64) versions, in addition to Windows; installers are built automatically on GitHub\nfeature: HTML report exports all inputs, the system diagram, profiles and charts; chart data can be downloaded as CSV\nfeature: the system diagram is shown on the results page\nfeature: water tank level is an optimization variable; water cannot flow from the tank back into the water grid\nfeature: power consumption of the compressor before the H2 tank, of the H2 sales compressor (per customer) and of the O2 sales compressor is calculated instead of entered\nfeature: compressors keep only the minimum inlet and maximum outlet pressure\nfeature: battery lifetime input in BESS, separate from the power converter\nfeature: “Restore defaults” buttons in waste heat sections\nfeature: rename dialogs are preloaded with the current name\nfeature: HPM tab removed from RESu\nfeature: RESu can be used when electricity import is not possible (import from the supplier is blocked)\nnew solver parameters for faster solving\nimproved preprocessing and postprocessing times\nbug: non-green energy appeared in the results although only green sources were available (electricity bus model updated)\nbug: PVGIS and renewables.ninja profiles converted to local time; fixed time of plots\nbug: components of a copied scenario pointed to the original scenario\nbug: names of fuel cell stacks in the investment table\nbug: waste heat error when local consumption is not used\nbug: wind farm error when importing renewables.ninja profiles\nbug: default price for water tank\nbug: water tank financials\nbug: fixed excessive memory use in heat modelling",
+    "section": "2026-11-17 v1.1.2 build 014",
+    "text": "2026-11-17 v1.1.2 build 014\n\nbug: the application crashed on macOS when it was closed\nfeature: macOS (Apple silicon) and Ubuntu/Linux (x86_64) versions, in addition to Windows; installers are built automatically on GitHub\nfeature: HTML report exports all inputs, the system diagram, profiles and charts; chart data can be downloaded as CSV\nfeature: the system diagram is shown on the results page\nfeature: water tank level is an optimization variable; water cannot flow from the tank back into the water grid\nfeature: power consumption of the compressor before the H2 tank, of the H2 sales compressor (per customer) and of the O2 sales compressor is calculated instead of entered\nfeature: compressors keep only the minimum inlet and maximum outlet pressure\nfeature: battery lifetime input in BESS, separate from the power converter\nfeature: “Restore defaults” buttons in waste heat sections\nfeature: rename dialogs are preloaded with the current name\nfeature: HPM tab removed from RESu\nfeature: RESu can be used when electricity import is not possible (import from the supplier is blocked)\nnew solver parameters for faster solving\nimproved preprocessing and postprocessing times\nbug: non-green energy appeared in the results although only green sources were available (electricity bus model updated)\nbug: PVGIS and renewables.ninja profiles converted to local time; fixed time of plots\nbug: components of a copied scenario pointed to the original scenario\nbug: names of fuel cell stacks in the investment table\nbug: waste heat error when local consumption is not used\nbug: wind farm error when importing renewables.ninja profiles\nbug: default price for water tank\nbug: water tank financials\nbug: fixed excessive memory use in heat modelling",
     "crumbs": [
       "Version history"
     ]
